@@ -39,15 +39,17 @@
         </asp:ScriptManager>
 
         <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
+            <div class="container"  style="height:60px;margin-top:10px;margin-bottom:6px;padding-left:10px;">
                 <div class="navbar-header">
-                    <a class="navbar-brand" runat="server" href="~/">Application name</a>
+                    <a class="navbar-brand" runat="server" href="~/" style="margin-top:8px;font-size:24px;">Application name</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a runat="server" href="~/">Home</a></li>
-                        <li><a runat="server" href="~/About">About</a></li>
-                        <li><a runat="server" href="~/Contact">Contact</a></li>
+                        <li><a runat="server" href="~/About">Subscription</a></li>
+                        <li><a runat="server" href="~/Contact">Services</a></li>
+                        <li><a runat="server" href="~/Contact">Package</a></li>
+                        <li><a runat="server" href="~/Contact">Rating</a></li>
                     </ul>
                 </div>
             </div>

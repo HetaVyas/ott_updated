@@ -12,6 +12,30 @@ textarea {
   max-width: 280px;
 }
 
+.navbar-nav{
+  position:absolute;
+  right:0;
+  padding-right:5%;
+}
+
+.navbar-brand{
+  position:absolute;
+  left:0;
+  padding-left:5%;
+}
+
+.navbar-fixed-top{
+  font-size:20px;
+}
+
+.navbar-nav li:hover{
+  background-color:#c0392b;
+  color:white;
+}
+
+.navbar-nav .navbar-fixed-top{
+  display:none;
+}
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
