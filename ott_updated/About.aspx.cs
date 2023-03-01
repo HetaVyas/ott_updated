@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 using System.Data;
 using Microsoft.Ajax.Utilities;
+using System.Web;
 
 namespace ott_updated
 {
@@ -33,22 +34,21 @@ namespace ott_updated
                 Guid uuid = Guid.NewGuid();
                 string myuuidAsString = uuid.ToString();
 
-                SqlDataAdapter SqlAdapter = new SqlDataAdapter("SELECT * FROM Subscriber where email='" + TextBox2.Text + "'", conn);
+                SqlDataAdapter SqlAdapter = new SqlDataAdapter("SELECT * FROM Subscriber where email='" + TextBox2.Text + "' OR username='"+Username.Text+"'" , conn);
 
                 DataTable dt = new DataTable();
                 SqlAdapter.Fill(dt);
 
                 if (dt.Rows.Count > 0)
                 {
-                    Label1.Text = "email already exist";
+                    Label1.Text = "email or username already exist";
                     errordialog.Visible = true;
                     ClientScript.RegisterStartupScript(this.GetType(), "alert", "hide_errormsg();", true);
                 }
                 else
                 {
-                    SqlCommand cmd = new SqlCommand("insert into Subscriber values('" + myuuidAsString + "','" + TextBox1.Text + "','" + TextBox2.Text + "','" + TextBox3.Text + "','" + language.Text + "','" + DropDownList1.Text + "','" + Plan.Text + "')", conn);
-                    /* cmd.Parameters.AddWithValue("@Language", language.SelectedItem.Value);
-                    cmd.Parameters.AddWithValue("@Genre", DropDownList1.SelectedItem.Value); */
+
+                    SqlCommand cmd = new SqlCommand("insert into Subscriber values('" + myuuidAsString + "','" + Username.Text + "','" + TextBox1.Text + "','"+ TextBox2.Text +"','" + TextBox3.Text + "','" + language.Text + "','" + DropDownList1.Text + "','" + Plan.Text + "')", conn);
                     cmd.ExecuteNonQuery();
                     conn.Close();
                     Response.Redirect("Contact.aspx", true);

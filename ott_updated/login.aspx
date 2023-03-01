@@ -151,8 +151,6 @@
                 
             }
 
-            
-
     </style>
 </head>
 <body>
@@ -163,7 +161,7 @@
     </div>
     <form id="form1" runat="server">
         <nav class="navbar navbar-dark bg-dark" style="height: 60px;background-color: black;">
-            <div class="logout" runat="server" ID="logout" onclick="logout_click">
+            <div class="logout" runat="server" ID="logout" onclick="Logout_click">
                 <a href="Default.aspx">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                     
@@ -187,7 +185,7 @@
 
 
                 <div style="text-align:center">
-                    <asp:Button ID="Button2" class="button2" runat="server" Text="Subscribe" onclick="Button2_Click" style="display: block;width: 200px;color:white;cursor: pointer;"/>
+                    <asp:Button ID="Button2" class="button2" runat="server" Text="Login" onclick="Button2_Click" style="display: block;width: 200px;color:white;cursor: pointer;"/>
                 </div>                
             </div>
         </div>
@@ -203,13 +201,13 @@
             function validateEmail(sender, args) {
                 if (args.Value == "") {
                     args.IsValid = false;
-                    $(".validate").css("border","1px solid red");
+                    $(".validate").css("border","3px solid red");
                 }
                 else {
                     var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
                     if (!filter.test(args.Value)) {
                         args.IsValid = false;
-                        $(".validate").css("border","1px solid red");
+                        $(".validate").css("border","3px solid red");
                     }
 
                     else{
@@ -218,6 +216,19 @@
                 }
             }
 
+            function setCookie(name,value,days) {
+                var expires = "";
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime() + (days*24*60*60*1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+            }
+            $(".logout").on("click",function(){
+                setCookie("email", "", -1);
+                setCookie("username", "", -1);
+            })
         </script>
     </form>
     

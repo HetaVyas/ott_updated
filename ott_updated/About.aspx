@@ -1,4 +1,4 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="About.aspx.cs" Inherits="ott_updated.About" %>
+﻿<%@ Page Title="About" MasterPageFile="~/Site.Master" Language="C#" AutoEventWireup="true" CodeBehind="About.aspx.cs" Inherits="ott_updated.About" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <head>
@@ -53,7 +53,7 @@
                 transition: all 100ms;
                 font-family: 'Open Sans', sans-serif;
                 font-weight:600;
-                height: 49px;
+                height: 39px;
                 width:280px;
                 margin:10px;
                 border-radius: 6px;
@@ -129,11 +129,14 @@
             <!-- <span id="error" class="error-text" runat="server">ERROR</span> -->
             <asp:Label ID="Label1" runat="server" class="error-text" Text=""></asp:Label>
         </div>
-        <div class="main-form">
+        <div class="main-form" style="">
             <div>
                 <h1 style="left:0;">Subscription</h1>
                 <div>
                     <asp:TextBox ID="TextBox1" class="inp validatename" runat="server" placeholder="Name"></asp:TextBox>                    
+                </div>
+                <div>
+                    <asp:TextBox ID="Username" class="inp validatename" runat="server" placeholder="Username"></asp:TextBox>
                 </div>
                 <div>
                     <asp:TextBox ID="TextBox2" class="inp validate" runat="server" placeholder="Email"></asp:TextBox>  

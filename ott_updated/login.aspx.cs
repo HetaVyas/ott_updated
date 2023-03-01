@@ -20,8 +20,16 @@ namespace ott_updated
             conn.Open();
         }
 
-        protected void logout_click(object sender, EventArgs e)
+
+        protected void Logout_click(object sender, EventArgs e)
         {
+            if (Request.Cookies["email"] != null)
+            {
+                HttpCookie myCookie = new HttpCookie("email");
+                myCookie.Value = "";
+                myCookie.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(myCookie);
+            }
             Response.Redirect("Default.aspx");
         }
 
@@ -33,6 +41,21 @@ namespace ott_updated
             SqlAdapter.Fill(dt);
 
             if (dt.Rows.Count > 0 ){
+
+                SqlCommand cmd = new SqlCommand("SELECT username FROM Subscriber where email = '"+ TextBox2.Text+"'",conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    HttpCookie cokie = new HttpCookie("username");
+                    cokie.Value = reader[0].ToString();
+                    cokie.Expires = DateTime.Now.AddMinutes(5);
+                    Response.Cookies.Add(cokie);
+                }
+
+                HttpCookie myCookie = new HttpCookie("email");
+                myCookie.Value = TextBox2.Text;
+                myCookie.Expires = DateTime.Now.AddMinutes(5);
+                Response.Cookies.Add(myCookie);
                 Response.Redirect("Default.aspx",true);
             }
             else{
