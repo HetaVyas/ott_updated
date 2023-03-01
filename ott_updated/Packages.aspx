@@ -1,23 +1,54 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeFile="Packages.aspx.cs" Inherits="Packages" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeFile="Packages.aspx.cs" Inherits="Packages" %>
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-    <style type="text/css">
-        #form1 {
-            height: 607px;
+<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+
+    <style>
+        #MainContent_Button1{
+            height:49px;
+            color:white;
+            background:transparent;
+            border:3px solid #a0a0a0;
+            padding:10px;
+            border-radius:6px;
+            font-weight:600;
+            letter-spacing:2px;
+        }
+
+        #MainContent_Button2{
+            height:49px;
+            color:white;
+            background:transparent;
+            border:3px solid #a0a0a0;
+            padding:10px;
+            border-radius:6px;
+            font-weight:600;
+            letter-spacing:2px;
+        }
+
+        #MainContent_Button2:hover{
+            background:black;
+        }
+
+        #MainContent_Button1:hover{
+            background:black;
         }
 
         body{
-
+            align-items:center
+        }
+        
+        #main-form{
+            position:absolute;
+            top:20%;
+            display:inline-block;
+            
         }
 
     </style>
-</head>
-<body>
-    <form id="form1" runat="server">
+        <div id="main-form">
+
+        
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Label ID="Label1" runat="server" Text="PACKAGES"></asp:Label>
 &nbsp;&nbsp;&nbsp;
@@ -78,6 +109,4 @@
 &nbsp;
             <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:myDBConnectionString %>" SelectCommand="SELECT * FROM [Packages]"></asp:SqlDataSource>
         </div>
-    </form>
-</body>
-</html>
+    </asp:Content>
