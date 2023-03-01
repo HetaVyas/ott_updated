@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Data;
 using System.Reflection.Emit;
+using System.Diagnostics;
 
 namespace ott_updated
 {
@@ -45,6 +46,7 @@ namespace ott_updated
                 else{
                     if (dt.Rows.Count > 0 ){
                         SqlCommand cmd = new SqlCommand("UPDATE Subscriber SET email = '"+ TextBox1.Text + "' where email='"+ value+"'",conn);
+                        cmd = new SqlCommand("update CustomizedPackage set PackDuration='" + duration + "', No._Of_Devices='" + devices + "', Ad_Disabled='" + Ad + "', Price='" + price+ "' where PackId='"+ packid + "'", con);
                         cmd.ExecuteNonQuery();
                         conn.Close();
                         Response.Redirect("Default.aspx",true);

@@ -122,6 +122,7 @@
 
           
         </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     </head>
     <body>
         <div class="dialog-box" ID="errordialog" runat="server">

@@ -185,6 +185,7 @@
 
 
                 <div style="text-align:center">
+               
                     <asp:Button ID="Button2" class="button2" runat="server" Text="Login" onclick="Button2_Click" style="display: block;width: 200px;color:white;cursor: pointer;"/>
                 </div>                
             </div>

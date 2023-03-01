@@ -56,7 +56,7 @@ namespace ott_updated
                 myCookie.Value = TextBox2.Text;
                 myCookie.Expires = DateTime.Now.AddMinutes(5);
                 Response.Cookies.Add(myCookie);
-                Response.Redirect("Default.aspx",true);
+                Response.Redirect("Packages.aspx",true);
             }
             else{
                 Label1.Text = "Invalid Credential";

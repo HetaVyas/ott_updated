@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Packages.aspx.cs" Inherits="Packages" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeFile="Packages.aspx.cs" Inherits="Packages" %>
 
 <!DOCTYPE html>
 
@@ -9,6 +9,11 @@
         #form1 {
             height: 607px;
         }
+
+        body{
+
+        }
+
     </style>
 </head>
 <body>
