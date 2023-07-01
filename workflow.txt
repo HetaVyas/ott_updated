@@ -1,0 +1,5 @@
+1 .fastapi with sqlalchemy ---> database [sqlite]
+
+
+COMMANDS ALEMBIC 
+1. alembic init migrations
