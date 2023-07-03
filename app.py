@@ -71,12 +71,57 @@ async def update(request:Request):
         with session_maker() as session:
             users = session.query(
                 User
-            ).filter(User.username == username,User.password == password)
+            ).filter(User.username == username,User.password == password).first()
 
+            if users is not None:
+                session.query(User).filter(User.id == users.id).update({"message":message})
+                session.commit()
+
+                return JSONResponse(
+                    content={"message":"updated sucessfully"},
+                    status_code=200
+                )
             
+            else:
+                return JSONResponse(
+                    content={"message":"invalid credential!"}
+                )
+    except Exception as e:
+        print(e)
+        return JSONResponse(
+            content={"error":e},
+            status_code=400
+        )
 
 
+@app.post("/delete")
+async def update(request:Request):
+    try :
+        
+        session_maker = sessionmaker(bind=create_engine("sqlite:///models.db"))
+        
+        form_data = await request.form()
+        username = form_data["username"]
+        password = form_data["password"]
 
+        with session_maker() as session:
+            users = session.query(
+                User
+            ).filter(User.username == username,User.password == password).first()
+
+            if users is not None:
+                session.query(User).filter(User.id == users.id).delete()
+                session.commit()
+
+                return JSONResponse(
+                    content={"message":"deleted sucessfully"},
+                    status_code=200
+                )
+            
+            else:
+                return JSONResponse(
+                    content={"message":"invalid credential!"}
+                )
     except Exception as e:
         print(e)
         return JSONResponse(
