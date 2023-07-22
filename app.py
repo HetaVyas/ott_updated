@@ -1,10 +1,12 @@
-from fastapi import FastAPI,Request
+from fastapi import FastAPI, HTTPException,Request
 from fastapi.responses import HTMLResponse,JSONResponse
 from fastapi.templating import Jinja2Templates
 import uvicorn
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from data_access.models import User
+import redis
+import time
 
 app = FastAPI()
 templates = Jinja2Templates("templates")
@@ -13,121 +15,42 @@ templates = Jinja2Templates("templates")
 async def index(request:Request):
     return templates.TemplateResponse("index.html",context={"request":request})
 
-
-@app.post("/insert")
-async def insert(request:Request):
+@app.post("/message")
+async def msg(request:Request):
     try:
-        session_maker = sessionmaker(bind=create_engine("sqlite:///models.db"))
-    
         form_data = await request.form()
         username = form_data["username"]
         password = form_data["password"]
         message = form_data["message"]
 
-        with session_maker() as session:
-            users = [
-                User(
-                username=username,
-                password=password,
-                message = message
-                )
-            ]
+        #print(username)
 
-            for user in users:
-                session.add(user)
-                session.commit()
-
-        with session_maker() as session:
-            users = session.query(User).all()
-            for user in users:
-                print(user.dict())
-
-        return JSONResponse(
-            content={"message":"data created"},
-            status_code=200
-        )
-    except Exception as e:
-        print(e)
-        return JSONResponse(
-            content={"error":e},
-            status_code=400 # bad request
-        )
+        #Save
+        session_key = f"session:{username}"
+        timestamp = int(time.time())   
+        print (session_key,timestamp)
+        
+        redis.set (session_key, "username: ", username)
+        redis.set (session_key, "password: ", password)
+        redis.set (session_key, "message: ", message)
+        redis.set (session_key, "time: ", timestamp)
     
-
-# render the template index.html --> Jinja2Templates # feature ==> ASGI []
-
-
-@app.post("/update")
-async def update(request:Request):
-    try :
-        
-        session_maker = sessionmaker(bind=create_engine("sqlite:///models.db"))
-        
-        form_data = await request.form()
-        username = form_data["username"]
-        password = form_data["password"]
-        message = form_data["message"]
-
-        with session_maker() as session:
-            users = session.query(
-                User
-            ).filter(User.username == username,User.password == password).first()
-
-            if users is not None:
-                session.query(User).filter(User.id == users.id).update({"message":message})
-                session.commit()
-
-                return JSONResponse(
-                    content={"message":"updated sucessfully"},
-                    status_code=200
-                )
-            
-            else:
-                return JSONResponse(
-                    content={"message":"invalid credential!"}
-                )
     except Exception as e:
         print(e)
         return JSONResponse(
             content={"error":e},
             status_code=400
         )
+    
+@app.get("/botmsg")
+async def get_data(username: str):
+    session_key = f"session:{username}"
+    session_data = redis.client.hgetall(session_key)
 
-
-@app.post("/delete")
-async def update(request:Request):
-    try :
-        
-        session_maker = sessionmaker(bind=create_engine("sqlite:///models.db"))
-        
-        form_data = await request.form()
-        username = form_data["username"]
-        password = form_data["password"]
-
-        with session_maker() as session:
-            users = session.query(
-                User
-            ).filter(User.username == username,User.password == password).first()
-
-            if users is not None:
-                session.query(User).filter(User.id == users.id).delete()
-                session.commit()
-
-                return JSONResponse(
-                    content={"message":"deleted sucessfully"},
-                    status_code=200
-                )
-            
-            else:
-                return JSONResponse(
-                    content={"message":"invalid credential!"}
-                )
-    except Exception as e:
-        print(e)
-        return JSONResponse(
-            content={"error":e},
-            status_code=400
-        )
+    if not session_data:
+        raise HTTPException(status_code=404, detail="Session not found")
+    
+    return session_data
 
 if __name__ == "__main__":
     uvicorn.run("app:app",port=8000,reload=True)
