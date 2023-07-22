@@ -2,11 +2,8 @@ from fastapi import FastAPI, HTTPException,Request
 from fastapi.responses import HTMLResponse,JSONResponse
 from fastapi.templating import Jinja2Templates
 import uvicorn
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-from data_access.models import User
 import redis
-import time
+import datetime
 
 app = FastAPI()
 templates = Jinja2Templates("templates")
@@ -14,6 +11,8 @@ templates = Jinja2Templates("templates")
 @app.get("/",response_class=HTMLResponse)
 async def index(request:Request):
     return templates.TemplateResponse("index.html",context={"request":request})
+
+redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 @app.post("/message")
 async def msg(request:Request):
@@ -27,10 +26,12 @@ async def msg(request:Request):
 
         #Save
         session_key = f"session:{username}"
-        timestamp = int(time.time())   
+        timestamp = datetime.datetime.now()
+        timestamp = timestamp.strftime("%d/%m/%Y, %H:%M:%S")
+
         print (session_key,timestamp)
         
-        redis.hset (session_key, mapping={
+        redis_client.hset (session_key, mapping={
             'username':username,
             'password':password,
             'message':message,
@@ -44,15 +45,19 @@ async def msg(request:Request):
             status_code=400
         )
     
-@app.get("/botmsg")
+@app.get("/botmsg/{username}")
 async def get_data(username: str):
     session_key = f"session:{username}"
-    session_data = redis.hgetall(session_key)
+    session_data = redis_client.hgetall(session_key)
+    session_data_str = {k.decode():v.decode() for k,v in session_data.items()}
 
-    if not session_data:
+    if not session_data_str:
         raise HTTPException(status_code=404, detail="Session not found")
     
-    return session_data
-
+    return JSONResponse(
+        content = {"message":session_data_str},
+        status_code = 200
+    )
+    
 if __name__ == "__main__":
     uvicorn.run("app:app",port=8000,reload=True)
