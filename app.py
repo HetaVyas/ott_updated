@@ -30,10 +30,12 @@ async def msg(request:Request):
         timestamp = int(time.time())   
         print (session_key,timestamp)
         
-        redis.set (session_key, "username: ", username)
-        redis.set (session_key, "password: ", password)
-        redis.set (session_key, "message: ", message)
-        redis.set (session_key, "time: ", timestamp)
+        redis.hset (session_key, mapping={
+            'username':username,
+            'password':password,
+            'message':message,
+            'time':timestamp
+        })
     
     except Exception as e:
         print(e)
@@ -45,7 +47,7 @@ async def msg(request:Request):
 @app.get("/botmsg")
 async def get_data(username: str):
     session_key = f"session:{username}"
-    session_data = redis.client.hgetall(session_key)
+    session_data = redis.hgetall(session_key)
 
     if not session_data:
         raise HTTPException(status_code=404, detail="Session not found")
